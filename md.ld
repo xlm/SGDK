@@ -52,9 +52,13 @@ SECTIONS
   {
     KEEP(*(.text.keepboot)) *(.text.*) *(.text)
     . = ALIGN(0x4);
+    __init_array_start = .;
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array))
+    __init_array_end = .;
      __CTOR_LIST__ = .;
     LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2)
-    *(.ctors)
+    KEEP(*(.ctors))
     LONG(0)
     __CTOR_END__ = .;
     __DTOR_LIST__ = .;

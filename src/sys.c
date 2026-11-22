@@ -65,6 +65,11 @@ extern bool VDP_doVBlankScrollProcess(void);
 // we don't want to share that method
 extern void MEM_init();
 
+extern VoidCallback* const __CTOR_LIST__[];
+extern VoidCallback* const __CTOR_END__[];
+extern VoidCallback* const __init_array_start[];
+extern VoidCallback* const __init_array_end[];
+
 // main function
 extern int main(bool hardReset);
 
@@ -429,6 +434,7 @@ static HINTERRUPT_CALLBACK _empty_hint_callback()
 
 NO_INLINE void _start_entry()
 {
+    VoidCallback* const* ctor;
     u32 banklimit;
     u16* src;
     u16* dst;
@@ -483,6 +489,12 @@ NO_INLINE void _start_entry()
     intCB = _int_callback;
 
     internal_reset();
+
+    for (ctor = __CTOR_END__ - 2; ctor > __CTOR_LIST__; ctor--)
+        (*ctor)();
+
+    for (ctor = __init_array_start; ctor < __init_array_end; ctor++)
+        (*ctor)();
 
 #if (ENABLE_LOGO != 0)
     {
