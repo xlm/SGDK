@@ -11,10 +11,7 @@ Use GCC 10 or newer with an m68k C++ compiler. For example, on Ubuntu:
 ```sh
 sudo apt-get update
 sudo apt-get install g++-m68k-linux-gnu binutils-m68k-linux-gnu build-essential cmake default-jdk
-export GDK="$HOME/SGDK" # Point this at your checkout of the cpp branch.
-export PREFIX=m68k-linux-gnu-
-export CC='m68k-linux-gnu-gcc -Wl,--build-id=none'
-export LIBGCC="$GDK/lib/libgcc.a"
+export GDK="${GDK:-$HOME/SGDK}" # Point this at your checkout of the cpp branch.
 export LIB="$HOME/sgdk-build/lib"
 mkdir -p "$LIB"
 ```
@@ -43,21 +40,70 @@ and `CXX` overrides. They must support `-m68000` and provide compatible GCC
 LTO tools. The bundled Windows toolchain has no `g++`, so it cannot build C++
 projects without a separately installed compiler and matching binutils.
 
+After building the native tools, select the Ubuntu cross toolchain:
+
+```sh
+export PREFIX=m68k-linux-gnu-
+export CC='m68k-linux-gnu-gcc -Wl,--build-id=none'
+export LIBGCC="$GDK/lib/libgcc.a"
+```
+
 ### Windows (untested)
 
 The bundled Windows toolchain has no `g++`. We recommend WSL2 with Ubuntu
 and following the Linux setup and build steps above and below. This WSL2
 approach has not been tested.
 
+### macOS
+
+Use Docker with Ubuntu 24.04. On Apple Silicon, its arm64 image and
+`g++-m68k-linux-gnu` package do not require amd64 emulation. With Docker
+Desktop or another Docker runtime running, start a shell from the root of
+your `cpp` checkout:
+
+```sh
+docker run --rm -it -v "$PWD:/sgdk" -w /sgdk -e GDK=/sgdk ubuntu:24.04 bash
+```
+
+If Docker Hub rate-limits the pull, use `mirror.gcr.io/library/ubuntu:24.04`
+instead. In the container, follow the Linux setup and build steps above and
+below, omitting `sudo` because the container runs as root. The ROMs stay in
+the mounted checkout after the container exits.
+
+For a native build on Apple Silicon, use Xcode Command Line Tools and the
+Homebrew `dciabrin/ngdevkit` tap. Its `m68k-neogeo-elf-g++` has the C++
+headers, `-m68000` and LTO support needed to build both configurations.
+From the checkout root:
+
+```sh
+brew tap dciabrin/ngdevkit
+brew trust dciabrin/ngdevkit
+brew install cmake openjdk@17 dciabrin/ngdevkit/ngdevkit-toolchain
+export PATH="$(brew --prefix openjdk@17)/bin:$PATH"
+export GDK="$PWD"
+export LIB="$HOME/sgdk-build/lib"
+mkdir -p "$LIB"
+export PREFIX=m68k-neogeo-elf-
+export LIBGCC="$GDK/lib/libgcc.a"
+```
+
+Build the native tools as above, then build the sample as below. Skip the
+Ubuntu cross toolchain settings. Homebrew's core `m68k-elf-gcc` builds both
+`libmd` variants but does not ship `<new>`, so it cannot build the sample.
+Use separate checkouts for different toolchains to avoid reusing old objects.
+
+Open the sample's `out/release/rom.bin` in a Mega Drive / Genesis emulator,
+such as RetroArch with Genesis Plus GX, to check for `C++ runtime OK`.
+
 ## Build the sample
 
 With the environment above:
 
 ```sh
-make -C "$GDK" -f makelib.gen -j2
-make -C "$GDK" -f makelib.gen debug -j2
-make -C "$GDK/sample/cpp/hello-cpp" -f "$GDK/makefile.gen" -j2
-make -C "$GDK/sample/cpp/hello-cpp" -f "$GDK/makefile.gen" debug -j2
+make -C "$GDK" -f makelib.gen -j2 LIB="$LIB"
+make -C "$GDK" -f makelib.gen debug -j2 LIB="$LIB"
+make -C "$GDK/sample/cpp/hello-cpp" -f "$GDK/makefile.gen" -j2 LIB="$LIB"
+make -C "$GDK/sample/cpp/hello-cpp" -f "$GDK/makefile.gen" debug -j2 LIB="$LIB"
 ```
 
 ROMs are in `sample/cpp/hello-cpp/out/release/rom.bin` and
