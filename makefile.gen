@@ -46,6 +46,12 @@ SRC_C += $(wildcard $(SRC_DIR)/*/*/*.c)
 SRC_C += $(wildcard $(SRC_DIR)/*/*/*/*.c)
 SRC_C += $(wildcard $(SRC_DIR)/*/*/*/*/*.c)
 SRC_C := $(filter-out $(SRC_DIR)/rom_header.c,$(SRC_C))
+SRC_CPP = $(wildcard *.cpp)
+SRC_CPP += $(wildcard $(SRC_DIR)/*.cpp)
+SRC_CPP += $(wildcard $(SRC_DIR)/*/*.cpp)
+SRC_CPP += $(wildcard $(SRC_DIR)/*/*/*.cpp)
+SRC_CPP += $(wildcard $(SRC_DIR)/*/*/*/*.cpp)
+SRC_CPP += $(wildcard $(SRC_DIR)/*/*/*/*/*.cpp)
 SRC_S = $(wildcard *.s)
 SRC_S += $(wildcard $(SRC_DIR)/*.s)
 SRC_S += $(wildcard $(SRC_DIR)/*/*.s)
@@ -83,14 +89,17 @@ OBJS += $(SRC_S80:.s80=.o)
 OBJS += $(SRC_ASM:.asm=.o)
 OBJS += $(SRC_S:.s=.o)
 OBJS += $(SRC_C:.c=.o)
+OBJS += $(SRC_CPP:.cpp=.o)
 OBJS := $(addprefix $(OUT_DIR)/, $(OBJS))
 
 LSTS := $(SRC_C:.c=.lst)
+LSTS += $(SRC_CPP:.cpp=.lst)
 LSTS := $(addprefix $(OUT_DIR)/, $(LSTS))
 
 DEPS = $(RES_RES:.res=.d)
 DEPS += $(SRC_S:.s=.d)
 DEPS += $(SRC_C:.c=.d)
+DEPS += $(SRC_CPP:.cpp=.d)
 DEPS := $(addprefix $(DEP_DIR)/, $(DEPS))
 
 INCS := -I. -I$(INC_DIR) -I$(RES_DIR) -I$(OUT_DIR) -isystem$(INC_LIB) -isystem$(OUT_DIR_LIB)
@@ -116,6 +125,8 @@ else
 	AFLAGS := -x assembler-with-cpp -Wa,--register-prefix-optional,--bitwise-or $(FLAGS)
 	LIBMD := $(LIB)/libmd.a
 endif
+
+CXXFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -fno-threadsafe-statics
 
 
 .PHONY: default
@@ -217,6 +228,10 @@ $(OUT_DIR)/%.o: %.c $(DEP_DIR)/%.d
 	@$(MKDIR) -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OUT_DIR)/%.o: %.cpp $(DEP_DIR)/%.d
+	@$(MKDIR) -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(OUT_DIR)/%.o: %.s $(DEP_DIR)/%.d
 	@$(MKDIR) -p $(dir $@)
 	$(CC) $(AFLAGS) -c $< -o $@
@@ -248,11 +263,19 @@ $(OUT_DIR)/%.lst: %.c $(DEP_DIR)/%.d
 	@$(MKDIR) -p $(dir $@)
 	$(CC) $(CFLAGS) -S -c $< -o $@
 
+$(OUT_DIR)/%.lst: %.cpp $(DEP_DIR)/%.d
+	@$(MKDIR) -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -S -c $< -o $@
+
 
 # deps files (we want resource to be generated first)
 $(DEP_DIR)/%.d: %.c $(RES_O)
 	@$(MKDIR) -p $(dir $@)
 	$(CC) $(CFLAGS) $< -E -MG -MM -MP -MT $(OUT_DIR)/$*.o -MF $(DEP_DIR)/$*.d
+
+$(DEP_DIR)/%.d: %.cpp $(RES_O)
+	@$(MKDIR) -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $< -E -MG -MM -MP -MT $(OUT_DIR)/$*.o -MF $(DEP_DIR)/$*.d
 
 $(DEP_DIR)/%.d: %.s
 	@$(MKDIR) -p $(dir $@)

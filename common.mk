@@ -27,7 +27,7 @@ endif
 #  - Windows: bundled binaries from $(BIN), not overridable from the environment (a stray CC/AR from a
 #    MinGW/MSYS shell must not hijack the bundled toolchain).
 #  - Linux / macOS: tools are taken from PATH using PREFIX (default 'm68k-elf-').
-#    TOOLCHAIN_DIR can give the toolchain folder, and CC, AR, LD, NM, OBJCPY, CONVSYM, ASMZ80, MACCER, BINTOS,
+#    TOOLCHAIN_DIR can give the toolchain folder, and CC, CXX, AR, LD, NM, OBJCPY, CONVSYM, ASMZ80, MACCER, BINTOS,
 #    LTO_PLUGIN, LIBGCC can be overridden from the environment or the make command line.
 #    The external GCC must be >= 10 (LTO) and target 68000 (-m68000 multilib, including libgcc).
 ifeq ($(OS),Windows_NT)
@@ -39,6 +39,7 @@ ifeq ($(OS),Windows_NT)
 
 	AR := $(BIN)/ar
 	CC := $(BIN)/gcc
+	CXX := $(BIN)/g++
 	LD:= $(BIN)/ld
 	NM:= $(BIN)/nm
 	OBJCPY := $(BIN)/objcopy
@@ -59,12 +60,15 @@ else
 	CP := cp
 	MKDIR := mkdir
 
-	# AR, CC and LD are predefined by make (origin 'default'), so '?=' can't be used for them
+	# AR, CC, CXX and LD are predefined by make (origin 'default'), so '?=' can't be used for them
 	ifneq ($(filter default undefined,$(origin AR)),)
 		AR := $(TC)$(PREFIX)ar
 	endif
 	ifneq ($(filter default undefined,$(origin CC)),)
 		CC := $(TC)$(PREFIX)gcc
+	endif
+	ifneq ($(filter default undefined,$(origin CXX)),)
+		CXX := $(TC)$(PREFIX)g++
 	endif
 	ifneq ($(filter default undefined,$(origin LD)),)
 		LD := $(TC)$(PREFIX)ld
