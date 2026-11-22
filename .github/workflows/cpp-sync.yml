@@ -1,0 +1,84 @@
+name: C++ upstream sync
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: cpp-upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out cpp
+        uses: actions/checkout@v5
+        with:
+          ref: cpp
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN || github.token }}
+
+      - name: Rebase onto upstream master
+        id: sync
+        env:
+          GIT_COMMITTER_NAME: xlm
+          GIT_COMMITTER_EMAIL: 804395+xlm@users.noreply.github.com
+        run: |
+          echo "old_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          git fetch --no-tags https://github.com/Stephane-D/SGDK.git master:refs/remotes/upstream/master
+          echo "upstream_sha=$(git rev-parse upstream/master)" >> "$GITHUB_OUTPUT"
+          if git merge-base --is-ancestor upstream/master HEAD; then
+            echo 'needed=false' >> "$GITHUB_OUTPUT"
+            echo 'cpp already contains upstream master. No rebase or push needed.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'needed=true' >> "$GITHUB_OUTPUT"
+            git rebase upstream/master
+          fi
+
+      - name: Build rebased C++ games
+        if: steps.sync.outputs.needed == 'true'
+        uses: ./.github/actions/cpp-build
+
+      - name: Push tested branches
+        if: steps.sync.outputs.needed == 'true'
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          OLD_SHA: ${{ steps.sync.outputs.old_sha }}
+          UPSTREAM_SHA: ${{ steps.sync.outputs.upstream_sha }}
+        run: |
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo 'Rebase and build passed. SYNC_TOKEN is not set, so pushes were skipped.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            git push origin "$UPSTREAM_SHA:refs/heads/master"
+            git push origin HEAD:refs/heads/cpp "--force-with-lease=cpp:$OLD_SHA"
+            echo 'Rebase and build passed. Fast-forwarded master and updated cpp with an explicit lease.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Report sync failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if git rev-parse --git-dir > /dev/null 2>&1; then
+            if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+              git rebase --abort || echo 'Could not abort the rebase. See the logs.' >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+          echo "Upstream sync failed. See $RUN_URL" >> "$GITHUB_STEP_SUMMARY"
+          issue=$(gh issue list --state open --search 'in:title "Upstream sync failed"' \
+            --json number,title --jq '[.[] | select(.title == "Upstream sync failed")][0].number // empty')
+          body="Upstream sync failed during rebase, build, tests or push. Run: $RUN_URL"
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "$body"
+          else
+            gh issue create --title 'Upstream sync failed' --body "$body"
+          fi
