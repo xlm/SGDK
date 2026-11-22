@@ -19,6 +19,10 @@
 #ifndef _SND_PCM4_H_
 #define _SND_PCM4_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SND_isPlaying_4PCM_ENV      _Pragma("GCC error \"This method is deprecated, use SND_PCM4_isPlaying instead.\"")
 #define SND_startPlay_4PCM_ENV      _Pragma("GCC error \"This method is deprecated, use SND_PCM4_startPlay instead.\"")
 #define SND_stopPlay_4PCM_ENV       _Pragma("GCC error \"This method is deprecated, use SND_PCM4_stopPlay instead.\"")
@@ -121,5 +125,9 @@ void SND_PCM4_setVolume(const SoundPCMChannel channel, const u8 volume);
  *      The returned value is comprised between 0 (quiet) to 15 (loud).
  */
 u8   SND_PCM4_getVolume(const SoundPCMChannel channel);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SND_PCM4_H_

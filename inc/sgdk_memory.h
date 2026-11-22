@@ -23,6 +23,10 @@
 // asics memory address definitions
 #include "memory_base.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  *  \brief
  *      Get u32 from u8 array (BigEndian order).
@@ -342,5 +346,9 @@ s8 memcmp(const void* pointer1, const void* pointer2, size_t len);
  */
 #define fastMemcpyU32(to, from, len)    _Pragma("GCC error \"This method is deprecated, use memcpy(..) instead.\"")
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SGDK_MEMORY_H_

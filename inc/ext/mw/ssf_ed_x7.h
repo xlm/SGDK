@@ -21,6 +21,10 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //#define SSF_CTRL_P 0x8000 //register accesss protection bit. should be set, otherwise register will ignore any attempts to write
 //#define SSF_CTRL_X 0x4000 //32x mode
 //#define SSF_CTRL_W 0x2000 //ROM memory write protection
@@ -68,6 +72,10 @@ u8 ssf_ed_x7_read(void);
  * \brief Initializes the driver on Everdrive X7.
  ****************************************************************************/
 void ssf_ed_x7_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_SSF_ED_X7_H_*/
 

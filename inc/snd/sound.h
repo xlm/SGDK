@@ -10,6 +10,10 @@
 #ifndef _SOUND_H_
 #define _SOUND_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  *  \brief
  *      Sound PCM channel enum
@@ -66,5 +70,9 @@ typedef enum
  */
 void SND_NULL_loadDriver(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SOUND_H_

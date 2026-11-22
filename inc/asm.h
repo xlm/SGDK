@@ -10,6 +10,9 @@
 #ifndef _ASM_H_
 #define _ASM_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define VAR2REG_B(var, reg)       asm volatile ("move.b %0, %/"reg"" :: "r" (var) : ""reg"");
 #define VAR2REG_W(var, reg)       asm volatile ("move.w %0, %/"reg"" :: "r" (var) : ""reg"");
@@ -47,6 +50,10 @@
     #define ENUM_END(enum_name) } enum_name;
 #endif
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _ASM_H_
 

@@ -17,6 +17,9 @@
 #include "vdp.h"
 #include "vdp_tile.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -785,5 +788,9 @@ void VDP_drawNumBG(VDPPlane plane, s32 value, u16 x, u16 y);
  * \see VDP_drawNumBG(..)
  */
 void VDP_drawNum(s32 value, u16 x, u16 y);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _VDP_BG_H_

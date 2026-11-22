@@ -13,6 +13,9 @@
 #ifndef _XGM_H_
 #define _XGM_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * \deprecated use XGM_isPlaying() instead
@@ -395,5 +398,9 @@ void XGM_setForceDelayDMA(const bool value);
  */
 u32 XGM_getCPULoad(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _XGM_H_

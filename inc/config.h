@@ -10,6 +10,9 @@
 #ifndef _CONFIG_
 #define _CONFIG_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -204,5 +207,9 @@
  *      Set it to 1 if you want to enable Link Cable Protocol functions (written by BlodTor)
  */
 #define MODULE_LINK_CABLE       0
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _CONFIG_

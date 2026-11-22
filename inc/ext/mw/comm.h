@@ -11,6 +11,10 @@
 #define _COMM_H_
 
 #include "types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 /**************************************** */
 
 typedef struct CommDriver {
@@ -88,6 +92,10 @@ size_t comm_get_drivers(const CommDriver** drivers);
  */
 void comm_set_driver(const CommDriver* driver);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_COMM_H_*/
 

@@ -26,6 +26,10 @@
 #define JSMN_STATIC
 #include "ext/mw/jsmn.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// Macro to extract the item (as string) from a token. Requires the json_str
 /// to have the null terminations added by json_null_terminate().
 #define json_item(json_str, obj_tok, idx) (idx) < 0 ? NULL : \
@@ -115,6 +119,10 @@ int json_key_search(const char *key, const char *json_str,
  * \return 1 if true, 0 if false, less than 0 if token is not a proper boolean.
  ****************************************************************************/
 int json_bool_get(const char *json_str, const jsmntok_t *json_tok, int obj_idx);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_JSON_H_*/
 

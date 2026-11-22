@@ -13,6 +13,10 @@
 #include "types.h"
 #include "mw-msg.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// 16C550 UART base address
 #define UART_BASE		0xA130C1
 
@@ -214,6 +218,10 @@ void uart_start(void);
  * help some UART chips to compute an accurate clock.
  ****************************************************************************/
 void uart_line_sync(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_16C550_H_*/
 

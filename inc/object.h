@@ -26,6 +26,9 @@
 
 #include "pool.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * \brief Allocated state for object (mainly useful for debugging)
@@ -167,5 +170,9 @@ void OBJ_setUpdateMethod(Object* object, ObjectCallback* updateMethod);
  */
 void OBJ_setEndMethod(Object* object, ObjectCallback* endMethod);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _OBJECT_H_

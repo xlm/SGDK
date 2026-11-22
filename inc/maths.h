@@ -11,7 +11,9 @@
 #ifndef _MATHS_H_
 #define _MATHS_H_
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // 1° step is enough for FIX16
 extern const fix16 trigtab_f16[90 + 1];
@@ -1075,5 +1077,9 @@ u32 V2D_S32_getApproximatedDistance(V2s32* v);
 
 // Deprecated functions
 #define getApproximatedDistanceV(dx, dy)     _Pragma("GCC error \"This method is deprecated, use V2D_S32_getApproximatedDistance(..) instead.\"")
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _MATHS_H_

@@ -32,6 +32,10 @@
 // I usually include stdint.h, but SGDK defines some stdint types here:
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Maximum number of flash regions. CFI standard allows up to 4
 #define FLASH_REGION_MAX 4
 
@@ -160,5 +164,9 @@ int16_t flash_copy(uint32_t dst, uint32_t src, uint16_t len);
  *                   Can be NULL if this parameter is not needed.
  */
 int16_t flash_sector_limits(uint32_t addr, uint32_t *start, uint32_t *next);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

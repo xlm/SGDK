@@ -31,6 +31,10 @@
 #include "ext/mw/lsd.h"
 #include "ext/mw/comm.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// API version implemented, major number
 #define MW_API_VERSION_MAJOR	1
 
@@ -993,6 +997,10 @@ uint16_t concat_kv_pairs(const char **key, const char **value,
 
 int16_t fill_addr(const char *dst_addr, const char *dst_port,
 		const char *src_port, struct mw_msg_in_addr *in_addr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_MEGAWIFI_H_*/
 

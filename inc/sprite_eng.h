@@ -19,6 +19,9 @@
 #include "pal.h"
 #include "pool.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -1089,6 +1092,10 @@ void SPR_logProfil(void);
  */
 void SPR_logSprites(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SPRITE_ENG_H_
 

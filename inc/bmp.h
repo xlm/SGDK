@@ -26,6 +26,9 @@
 #ifndef _BMP_H_
 #define _BMP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define BMP_PLANE_WIDTH_SFT         planeWidthSft
 #define BMP_PLANE_HEIGHT_SFT        planeHeightSft
@@ -685,6 +688,10 @@ bool BMP_drawBitmapScaled(const Bitmap *bitmap, u16 x, u16 y, u16 w, u16 h, bool
  */
 void BMP_scale(const u8 *src_buf, u16 src_wb, u16 src_h, u16 src_pitch, u8 *dst_buf, u16 dst_wb, u16 dst_h, u16 dst_pitch);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _BMP_H_
 

@@ -22,6 +22,9 @@
 #ifndef _VDP_H_
 #define _VDP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -1144,6 +1147,10 @@ void VDP_showFPS(u16 asFloat, u16 x, u16 y);
  * \see #SYS_getCPULoad()
  */
 void VDP_showCPULoad(u16 x, u16 y);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _VDP_H_
 

@@ -11,6 +11,10 @@
 #ifndef __TASK_CST_H__
 #define __TASK_CST_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  *  \brief
  *      Byte length for the user task stack (should be less than STACK_SIZE define din memory_base.h)
@@ -29,5 +33,9 @@
  */
 #define TSK_PEND_FOREVER    -1
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*__TASK_CST_H__*/

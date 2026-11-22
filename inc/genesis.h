@@ -83,10 +83,18 @@
 #include "ext/link_cable.h"
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // preserve compatibility with old resources name
 #define logo_lib sgdk_logo
 #define font_lib font_default
 #define font_pal_default palette_grey
 #define font_pal_lib font_pal_default
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _GENESIS_H_

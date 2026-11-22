@@ -26,6 +26,10 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// \brief Module error codes.
 ///
 /// On success value is 0. On error all values are
@@ -534,6 +538,10 @@ char *gj_friend_get_next(char *pos, char **user_id);
  ****************************************************************************/
 char *gj_request(const char **path, uint8_t num_paths, const char **key,
 		const char **value, uint8_t num_kv_pairs, uint32_t *out_len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _GAMEJOLT_H_ */
 

@@ -16,6 +16,9 @@
 #include "vdp_bg.h"
 #include "map.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -446,5 +449,9 @@ void qsort_s32(s32 *data, u16 left, u16 right);
 void qsort(void** data, u16 len, _comparatorCallback* cb);
 
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _TOOLS_H_

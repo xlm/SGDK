@@ -10,6 +10,9 @@
 #ifndef _KDEBUG_H_
 #define _KDEBUG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern void KDebug_Halt(void);
 extern void KDebug_Alert(const char *str);
@@ -17,5 +20,9 @@ extern void KDebug_AlertNumber(u32 nVal);
 extern void KDebug_StartTimer(void);
 extern void KDebug_StopTimer(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

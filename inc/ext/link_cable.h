@@ -99,6 +99,10 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Constants
  */
@@ -310,6 +314,10 @@ void LCP_masterCycle();
  * return LCP_error
  */
 u16 LCP_getError();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // MODULE_LINK_CABLE
 

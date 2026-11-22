@@ -31,6 +31,10 @@
 #include "vdp_tile.h"
 #include "pal.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // forward
 typedef struct Map Map;
 
@@ -405,5 +409,9 @@ void MAP_setDataPatchCallback(Map* map, MapDataPatchCallback *CB);
  */
 void MAP_overridePlaneSize(Map* map, u16 w, u16 h);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _MAP_H_

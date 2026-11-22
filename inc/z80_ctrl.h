@@ -15,6 +15,9 @@
 #ifndef _Z80_CTRL_H_
 #define _Z80_CTRL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define Z80_HALT_PORT                   0xA11100
 #define Z80_RESET_PORT                  0xA11200
@@ -416,5 +419,9 @@ bool Z80_getForceDelayDMA(void);
  *  \see Z80_setBusProtection()
  */
 void Z80_setForceDelayDMA(bool value);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _Z80_CTRL_H_

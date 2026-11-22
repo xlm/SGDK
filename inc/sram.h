@@ -27,6 +27,9 @@
 
 #include "mapper.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define SRAM_CONTROL    MAPPER_BASE
 #define SRAM_BASE       0x200001
@@ -106,5 +109,9 @@ void SRAM_writeWord(u32 offset, u16 val);
  */
 void SRAM_writeLong(u32 offset, u32 val);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SRAM_H_

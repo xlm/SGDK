@@ -144,6 +144,9 @@
 #ifndef _VRAM_H_
 #define _VRAM_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \brief
@@ -266,5 +269,9 @@ s16 VRAM_alloc(VRAMRegion *region, u16 size);
  */
 void VRAM_free(VRAMRegion *region, u16 index);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _VRAM_H_

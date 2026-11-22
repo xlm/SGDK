@@ -35,6 +35,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // *****************************************************************************
 //
 //  Types
@@ -383,5 +387,9 @@ V2u16 CON_getCursorPosition();
  */
 
 int CON_write(const char *fmt, ...)  __attribute__ ((format (printf, 1, 2)));
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // MODULE_CONSOLE

@@ -16,6 +16,9 @@
 #ifndef _MATHS3D_H_
 #define _MATHS3D_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // 3D base structutes
 
@@ -476,5 +479,9 @@ void M3D_project_f16(const V3f16* src, V2f16* dest, u16 numv);
  */
 void M3D_project_s16(const V3f16* src, V2s16* dest, u16 numv);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _MATHS3D_H_

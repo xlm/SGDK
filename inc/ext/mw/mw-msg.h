@@ -21,6 +21,10 @@
 #include "types.h"
 #include "sys.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// Maximum buffer length (bytes)
 #define MW_MSG_MAX_BUFLEN	512
 #define MW_MS_TO_FRAMES(ms)	(((ms)*60/500 + 1)/2)
@@ -388,6 +392,10 @@ struct mw_reuse_payload {
 	/// Data payload
 	char payload[MW_CMD_MAX_BUFLEN - 4 - 2];
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_MW_MSG_H_
 

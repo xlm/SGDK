@@ -10,6 +10,9 @@
 #ifndef _FAT16_H
 #define _FAT16_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if (MODULE_FAT16 != 0)
 
@@ -80,5 +83,9 @@ u8 fat16SkipSectors(Fat16File *file, u16 num);
 
 #endif  /* MODULE_FAT16 */
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* _FAT16_H */

@@ -12,6 +12,10 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define REG_FIFO_DATA (*((volatile u16*)(0xA130D0)))
 #define REG_FIFO_STAT (*((volatile u16*)(0xA130D2)))
 #define REG_SYS_STAT (*((volatile u16*)(0xA130D4)))
@@ -34,5 +38,9 @@ u8 ssf_ed_pro_read(void);
  * \brief Initializes the driver on Everdrive PRO.
  ****************************************************************************/
 void ssf_ed_pro_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_SSF_ED_PRO_H_*/

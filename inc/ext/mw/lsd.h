@@ -49,6 +49,10 @@
 #include "ext/mw/comm.h"
 #include "ext/mw/mw-msg.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// LSD frame overhead in bytes
 #define LSD_OVERHEAD		4
 
@@ -167,6 +171,10 @@ enum lsd_status lsd_recv_sync(char *buf, uint16_t *len, uint8_t *ch);
 void lsd_process(void);
 
 /** \} */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_LSD_H_
 

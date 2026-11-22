@@ -10,6 +10,10 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  *  \brief
  *      FALSE define (equivalent to 0).
@@ -316,5 +320,9 @@ u8  getZeroU8(void);
 u16 getZeroU16(void);
 u32 getZeroU32(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _TYPES_H_

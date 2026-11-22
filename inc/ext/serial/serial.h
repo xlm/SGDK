@@ -62,6 +62,10 @@
 #include "genesis.h"
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PORT2_CTRL 0xA1000B
 #define PORT2_SCTRL 0xA10019
 #define PORT2_TX 0xA10015
@@ -129,5 +133,9 @@ void serial_set_port(IoPort port);
  * \return The I/O port currently in use for serial communication.
  */
 IoPort serial_get_port(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_SERIAL_H_*/

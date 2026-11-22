@@ -19,6 +19,10 @@
 #ifndef _SGDK_STRING_H_
 #define _SGDK_STRING_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if (ENABLE_NEWLIB == 0)
 
 /**
@@ -344,6 +348,10 @@ void FF16_toStr(fastfix16 value, char *str, u16 numdec);
  *  \see fastFix32ToStr
  */
 void FF32_toStr(fastfix32 value, char *str, u16 numdec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SGDK_STRING_H_
 

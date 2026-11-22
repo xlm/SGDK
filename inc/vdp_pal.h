@@ -5,6 +5,9 @@
 #ifndef _VDP_PAL_H_
 #define _VDP_PAL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  \deprecated Use #PAL_getColor(..) instead
@@ -97,5 +100,9 @@
  */
 #define VDP_interruptFade()     _Pragma("GCC error \"This definition is deprecated, use PAL_interruptFade(..) instead.\"")
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _VDP_PAL_H_

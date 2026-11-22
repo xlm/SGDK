@@ -24,6 +24,9 @@
 
 #include "task_cst.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * \brief Initialize the task sub system (reset internal variables).
@@ -73,5 +76,9 @@ bool TSK_superPend(s16 wait);
  *            the VBLANK interrupt.
  */
 void TSK_superPost(bool immediate);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*__TASK_H__*/

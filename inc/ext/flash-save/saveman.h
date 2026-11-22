@@ -64,6 +64,10 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * \brief Status code for some of the function calls
  * \{/
@@ -173,5 +177,9 @@ int16_t sm_delete(uint8_t slot);
  * \note This function halts Z80 and disables interrupts until it done.
  */
 int16_t sm_clear(uint8_t num_slots);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

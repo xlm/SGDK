@@ -33,6 +33,9 @@
 #ifndef _JOY_H_
 #define _JOY_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define PORT_1          0x0000
 #define PORT_2          0x0001
@@ -478,5 +481,9 @@ u16 JOY_waitPressTime(u16 joy, u16 btn, u16 ms);
  */
 void JOY_update(void);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _JOY_H_

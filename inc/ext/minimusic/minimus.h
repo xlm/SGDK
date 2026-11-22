@@ -4,6 +4,10 @@
 // SGDK replacement for stdint.h
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MINIMUSIC_MEMORY_BARRIER() asm volatile ("" : : : "memory")
 
 static inline void MINIMUSIC_Z80_GUARD_BEGIN() {
@@ -25,5 +29,9 @@ static inline void MINIMUSIC_Z80_GUARD_END() {
 void minimusic_init(const void *, uint16_t);
 void minimusic_sendcmd(uint8_t);
 uint8_t minimusic_get_status(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

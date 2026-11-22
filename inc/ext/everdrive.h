@@ -10,6 +10,10 @@
 #ifndef _EVERDRIVE
 #define _EVERDRIVE
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if (MODULE_EVERDRIVE != 0)
 
 //config register bits
@@ -112,5 +116,9 @@ void evd_init(u16 def_rom_bank, u8 _is_ram_app);
 
 
 #endif // MODULE_EVERDRIVE
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
