@@ -1,0 +1,62 @@
+name: C++ builds
+
+on:
+  push:
+    branches: [cpp]
+  pull_request:
+    branches: [cpp]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ${{ fromJSON(github.event_name == 'schedule' && '["branch", "upstream"]' || '["branch"]') }}
+    steps:
+      - name: Check out fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'schedule' && 'cpp' || github.ref }}
+
+      - name: Try latest upstream master
+        if: matrix.variant == 'upstream'
+        run: |
+          git fetch https://github.com/Stephane-D/SGDK.git master
+          git -c user.name=CI -c user.email=ci@users.noreply.github.com rebase FETCH_HEAD
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-m68k-linux-gnu binutils-m68k-linux-gnu build-essential cmake default-jdk
+
+      - name: Build native tools
+        run: |
+          for tool in bintos sjasm xgmtool; do
+            cmake -S "tools/$tool" -B "$RUNNER_TEMP/native/$tool"
+            cmake --build "$RUNNER_TEMP/native/$tool" -j2
+            echo "$RUNNER_TEMP/native/$tool" >> "$GITHUB_PATH"
+          done
+          make -C tools/convsym BUILD_DIR="$RUNNER_TEMP/native/convsym" -j2
+          echo "$RUNNER_TEMP/native/convsym" >> "$GITHUB_PATH"
+
+      - name: Test freestanding runtime
+        run: sh tests/cpp/runtime.sh "$RUNNER_TEMP"
+
+      - name: Build libraries and C++ sample
+        run: |
+          mkdir -p "$RUNNER_TEMP/lib"
+          args=(PREFIX=m68k-linux-gnu- 'CC=m68k-linux-gnu-gcc -Wl,--build-id=none'
+                "LIB=$RUNNER_TEMP/lib" "LIBGCC=$PWD/lib/libgcc.a")
+          make -f makelib.gen -j2 "${args[@]}"
+          make -f makelib.gen debug -j2 "${args[@]}"
+          make -C sample/cpp/hello-cpp -f "$PWD/makefile.gen" -j2 "${args[@]}"
+          make -C sample/cpp/hello-cpp -f "$PWD/makefile.gen" debug -j2 "${args[@]}"
