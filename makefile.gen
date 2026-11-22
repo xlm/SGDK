@@ -128,6 +128,10 @@ endif
 
 CXXFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -fno-threadsafe-statics
 
+ifneq ($(strip $(SRC_CPP)),)
+OBJS += $(OUT_DIR)/cpp/runtime.o
+endif
+
 
 .PHONY: default
 .PHONY: all
@@ -229,6 +233,10 @@ $(OUT_DIR)/%.o: %.c $(DEP_DIR)/%.d
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OUT_DIR)/%.o: %.cpp $(DEP_DIR)/%.d
+	@$(MKDIR) -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OUT_DIR)/cpp/runtime.o: $(SRC_LIB)/cpp/runtime.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
