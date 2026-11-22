@@ -119,11 +119,89 @@ Run the host-side allocation and fatal-path checks with
 SGDK allocator and do not replace the m68k sample or emulator checks.
 
 `.github/workflows/cpp.yml` builds the libraries and sample in release and
-debug on pushes and pull requests targeting `cpp`. Its weekly run checks
-both `cpp` itself and a temporary rebase onto `Stephane-D/SGDK` master.
-Conflicts or build errors fail CI. Nothing is pushed by the workflow.
+debug on pushes and pull requests targeting `cpp`, or on manual dispatch.
+It shares `.github/actions/cpp-build` with the upstream sync workflow. The
+action installs the toolchain, builds native tools, tests the runtime and
+builds both libraries and both sample configurations.
 
-GitHub only runs schedules from the repository's **default branch**. To
-activate the weekly check, make `cpp` the fork's default branch, or put the
-workflow on the fork's default branch too. A manual dispatch is also
-available for a normal branch build.
+## Keeping the fork up to date
+
+### Manual sync
+
+A rebase replays your fork's commits on the new upstream version, like
+reapplying a series of patches. Start with a clean working tree and Git
+2.38 or newer for `--update-refs`. Add the upstream remote once:
+
+```sh
+git remote add upstream https://github.com/Stephane-D/SGDK.git
+```
+
+Then sync:
+
+```sh
+git fetch origin
+git fetch upstream master
+git switch master
+git merge --ff-only upstream/master
+git switch cpp
+git rebase --update-refs upstream/master
+```
+
+`--update-refs` also moves the local stacked branches `rename-memory-header`,
+`cpp-extern-c` and `cpp-build-support` to their replayed commits. It does not
+move branches checked out in another worktree. When upstream merges a
+branch's changes, Git normally detects equivalent patches and drops those
+commits from the rebase automatically.
+
+If there is a conflict, Git pauses. Edit the marked files, `git add` the
+resolved files, then run `git rebase --continue`. Repeat as needed. Use
+`git rebase --abort` to return to the state before the rebase if unsure.
+Do not push until the rebase and all checks succeed.
+
+Build the libraries and sample in release and debug using the commands
+above, and run the runtime tests. Then publish:
+
+```sh
+git push origin master
+git push --force-with-lease origin rename-memory-header cpp-extern-c cpp-build-support cpp
+```
+
+Master must fast-forward. The other branches have rewritten commit IDs, so
+they need `--force-with-lease`. Unlike a plain force push, the lease refuses
+to overwrite remote work you have not fetched. Do not fetch again between
+starting the sync and pushing without checking for someone else's changes.
+
+### Automatic sync
+
+`.github/workflows/cpp-sync.yml` runs Mondays at 06:00 UTC, or manually from
+the Actions tab. It checks out `cpp` and fetches upstream master. If `cpp`
+already contains that version, it stops with a note in the run summary.
+Otherwise it rebases in the CI workspace, keeping xlm as committer, and
+runs the shared build action.
+
+After successful checks, it fast-forwards the fork's `master` and updates
+`cpp` with a lease tied to the exact SHA checked out before the rebase.
+It does not update the remote stacked branches. If `SYNC_TOKEN` is absent,
+it still rebases and tests, but skips both pushes and explains this in the
+summary. A failed rebase, build, test or push opens an `Upstream sync failed`
+issue with the run link, or comments on the existing open issue.
+
+### One-time GitHub setup
+
+1. Make `cpp` the fork's default branch in repository settings. GitHub only
+   runs scheduled workflows from the default branch.
+2. Create a fine-grained personal access token limited to **xlm/SGDK only**.
+   Give it **Contents: read and write** and **Workflows: read and write**.
+3. Save it as the repository Actions secret **`SYNC_TOKEN`**. Set an expiry
+   and renew the secret before it expires.
+4. Turn on **Issues** in repository settings. Forks start with Issues off,
+   and the sync workflow reports failures as an issue.
+5. In the Actions tab, disable **publish-doxygen**. It comes from upstream,
+   publishes upstream's docs site, and would start running daily once `cpp`
+   is the default branch.
+
+The workflow itself has only contents-read and issues-write permissions.
+Its normal `GITHUB_TOKEN` can report failures, but may not push commits that
+touch `.github/workflows`. The PAT supplies that permission and allows
+push-triggered builds after a successful sync. Never put the PAT in a file
+or commit.
