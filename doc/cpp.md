@@ -43,6 +43,12 @@ and `CXX` overrides. They must support `-m68000` and provide compatible GCC
 LTO tools. The bundled Windows toolchain has no `g++`, so it cannot build C++
 projects without a separately installed compiler and matching binutils.
 
+### Windows (untested)
+
+The bundled Windows toolchain has no `g++`. We recommend WSL2 with Ubuntu
+and following the Linux setup and build steps above and below. This WSL2
+approach has not been tested.
+
 ## Build the sample
 
 With the environment above:
