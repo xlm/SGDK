@@ -1,7 +1,7 @@
 #include "config.h"
 #include "types.h"
 
-#include "memory.h"
+#include "sgdk_memory.h"
 
 #include "tab_cnv.h"
 #include "sys.h"

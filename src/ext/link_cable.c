@@ -101,7 +101,7 @@
 #include "sys.h"
 #include "vdp.h"
 #include "z80_ctrl.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 
 /**

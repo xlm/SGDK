@@ -8,7 +8,7 @@
 #include "kdebug.h"
 #include "timer.h"
 #include "maths.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "mapper.h"
 #include "vdp.h"
 

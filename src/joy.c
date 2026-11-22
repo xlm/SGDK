@@ -2,7 +2,7 @@
 #include "types.h"
 
 #include "timer.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 #include "joy.h"
 #include "sys.h"

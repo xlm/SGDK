@@ -9,7 +9,7 @@
 
 #include "tools.h"
 #include "sgdk_string.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "dma.h"
 #include "timer.h"
 #include "sys.h"

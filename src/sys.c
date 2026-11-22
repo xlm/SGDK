@@ -3,7 +3,7 @@
 
 #include "sys.h"
 
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "mapper.h"
 #include "vdp.h"
 #include "vdp_bg.h"

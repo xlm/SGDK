@@ -9,7 +9,7 @@
 #include "dma.h"
 #include "vdp_tile.h"
 
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "mapper.h"
 #include "sys.h"
 

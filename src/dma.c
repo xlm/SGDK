@@ -3,7 +3,7 @@
 #include "config.h"
 #include "vdp.h"
 #include "sys.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "z80_ctrl.h"
 
 #include "kdebug.h"

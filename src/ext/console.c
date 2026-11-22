@@ -37,7 +37,7 @@
 #include "ym2612.h"
 #include "psg.h"
 #include "z80_ctrl.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 #include "ext/console.h"
 

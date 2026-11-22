@@ -3,7 +3,7 @@
 
 #include "pool.h"
 
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "tools.h"
 
 

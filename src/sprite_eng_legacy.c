@@ -9,7 +9,7 @@
 #include "vdp.h"
 #include "vdp_spr.h"
 #include "dma.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "pool.h"
 #include "vram.h"
 #include "tools.h"

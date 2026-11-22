@@ -6,7 +6,7 @@
 
 #include "sys.h"
 #include "timer.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "dma.h"
 #include "maths.h"
 

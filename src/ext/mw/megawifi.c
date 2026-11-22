@@ -15,7 +15,7 @@
 #include "types.h"
 
 #include "sgdk_string.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "maths.h"
 #include "task.h"
 

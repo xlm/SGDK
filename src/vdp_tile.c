@@ -4,7 +4,7 @@
 #include "vdp.h"
 #include "vdp_tile.h"
 
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "dma.h"
 #include "tools.h"
 #include "mapper.h"

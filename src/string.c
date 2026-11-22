@@ -5,7 +5,7 @@
 
 #include "tab_cnv.h"
 #include "maths.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 
 #define P01 10

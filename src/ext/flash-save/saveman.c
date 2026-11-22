@@ -30,7 +30,7 @@
 
 #include "sys.h"
 #include "z80_ctrl.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 #if (MODULE_FLASHSAVE != 0)
 

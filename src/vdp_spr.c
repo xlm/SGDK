@@ -7,7 +7,7 @@
 #include "dma.h"
 #include "tools.h"
 #include "sgdk_string.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 
 
 // important to have a global structure here, 16 used for "overflow" with sprite engine (consumes 768 bytes of memory)

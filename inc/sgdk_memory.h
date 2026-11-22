@@ -1,5 +1,5 @@
 /**
- *  \file memory.h
+ *  \file sgdk_memory.h
  *  \brief Memory handling methods
  *  \author Stephane Dallongeville
  *  \date 08/2011
@@ -17,8 +17,8 @@
  * The end of memory is defined with a 0 sized bloc.<br>
  */
 
-#ifndef _MEMORY_H_
-#define _MEMORY_H_
+#ifndef _SGDK_MEMORY_H_
+#define _SGDK_MEMORY_H_
 
 // asics memory address definitions
 #include "memory_base.h"
@@ -343,4 +343,4 @@ s8 memcmp(const void* pointer1, const void* pointer2, size_t len);
 #define fastMemcpyU32(to, from, len)    _Pragma("GCC error \"This method is deprecated, use memcpy(..) instead.\"")
 
 
-#endif // _MEMORY_H_
+#endif // _SGDK_MEMORY_H_

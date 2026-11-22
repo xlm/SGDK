@@ -4,7 +4,7 @@
 #include "vram.h"
 
 #include "vdp.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "dma.h"
 #include "tools.h"
 #include "sys.h"

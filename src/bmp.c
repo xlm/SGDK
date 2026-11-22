@@ -4,7 +4,7 @@
 #include "bmp.h"
 
 #include "sys.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "maths3D.h"
 
 #include "vdp.h"
@@ -14,7 +14,7 @@
 #include "dma.h"
 
 #include "mapper.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "tools.h"
 #include "sgdk_string.h"
 

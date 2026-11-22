@@ -11,7 +11,7 @@
 #include "timer.h"
 #include "mapper.h"
 #include "maths.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "vdp.h"
 
 #include "tools.h"

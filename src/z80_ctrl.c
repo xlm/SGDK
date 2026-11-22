@@ -5,7 +5,7 @@
 
 #include "ym2612.h"
 #include "psg.h"
-#include "memory.h"
+#include "sgdk_memory.h"
 #include "timer.h"
 #include "sys.h"
 #include "vdp.h"
