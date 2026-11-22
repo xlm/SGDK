@@ -2,12 +2,6 @@
 #include <genesis.h>
 
 using AllocationSize = decltype(sizeof(0));
-#ifdef __STDCPP_DEFAULT_NEW_ALIGNMENT__
-static constexpr AllocationSize alignment = __STDCPP_DEFAULT_NEW_ALIGNMENT__;
-#else
-static constexpr AllocationSize alignment = __BIGGEST_ALIGNMENT__;
-#endif
-static constexpr AllocationSize overhead = sizeof(void*) + alignment - 1;
 
 [[noreturn]] static void fatal(const char* message)
 {
@@ -17,17 +11,9 @@ static constexpr AllocationSize overhead = sizeof(void*) + alignment - 1;
 
 static void* allocate(AllocationSize size)
 {
-    // Leave room for MEM_alloc's 16-bit block header and alignment.
-    if (size > 0xFFFC - overhead) return nullptr;
-    void* base = MEM_alloc((size ? size : 1) + overhead);
-    if (!base) return nullptr;
-
-    // MEM_alloc only guarantees word alignment, not C++ new's default alignment.
-    auto address = reinterpret_cast<__UINTPTR_TYPE__>(base);
-    address = (address + overhead) & ~(static_cast<__UINTPTR_TYPE__>(alignment) - 1);
-    void* result = reinterpret_cast<void*>(address);
-    static_cast<void**>(result)[-1] = base;
-    return result;
+    // Leave room for MEM_alloc's 16-bit block header.
+    if (size > 0xFFFC) return nullptr;
+    return MEM_alloc(size ? size : 1);
 }
 
 void* operator new(AllocationSize size)
@@ -44,7 +30,7 @@ void* operator new[](AllocationSize size)
 
 void operator delete(void* pointer) noexcept
 {
-    if (pointer) MEM_free(static_cast<void**>(pointer)[-1]);
+    if (pointer) MEM_free(pointer);
 }
 
 void operator delete[](void* pointer) noexcept

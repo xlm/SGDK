@@ -50,13 +50,14 @@ int main(int argc, char** argv)
         return result ? 1 : 2;
     }
 
-    const AllocationSize maximum = 0xFFFC - overhead;
-    const AllocationSize sizes[] = {0, 1, 2, 3, alignment - 1, alignment, alignment + 1, maximum};
+    const AllocationSize maximum = 0xFFFC;
+    const AllocationSize sizes[] = {0, 1, 2, 3, 4, 5, maximum};
     for (auto size : sizes)
     {
         void* pointer = ::operator new(size);
-        assert(reinterpret_cast<__UINTPTR_TYPE__>(pointer) % alignment == 0);
-        assert(lastSize == (size ? size : 1) + overhead);
+        assert(pointer == lastBase);
+        assert(reinterpret_cast<__UINTPTR_TYPE__>(pointer) % 2 == 0);
+        assert(lastSize == (size ? size : 1));
         std::memset(pointer, 0xA5, size);
         ::operator delete(pointer);
     }

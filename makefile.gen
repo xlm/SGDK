@@ -129,6 +129,7 @@ endif
 CXXFLAGS := $(CFLAGS) -fno-exceptions -fno-rtti -fno-threadsafe-statics
 
 ifneq ($(strip $(SRC_CPP)),)
+CXXFLAGS += -faligned-new=2
 OBJS += $(OUT_DIR)/cpp/runtime.o
 endif
 

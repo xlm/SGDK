@@ -80,6 +80,8 @@ debug information, and adds:
 - `-fno-rtti`: no `dynamic_cast` or `typeid`. Virtual methods still work.
 - `-fno-threadsafe-statics`: function-local statics initialize on first use
   without locking. Do not race their initialization from an interrupt.
+- `-faligned-new=2`: GCC's default `new` alignment matches SGDK's two-byte
+  allocator alignment.
 
 The language version is the compiler's default. Set, for example,
 `EXTRA_FLAGS=-std=gnu++17` for a C++-only project to select C++17 explicitly.
@@ -97,14 +99,29 @@ built from this branch's Java sources emits these guards itself.
 
 The runtime supplies scalar/array, sized and nothrow allocation functions,
 using `MEM_alloc` and `MEM_free`. Zero-byte requests allocate at least one
-byte. An allocation header and padding preserve the compiler's default new
-alignment despite SGDK's word-aligned allocator. Requests that exceed the
-16-bit allocator's limit, including this overhead, are rejected before
-narrowing. With Ubuntu GCC's four-byte default alignment the maximum request
-is 65,525 bytes. Available RAM usually imposes a lower limit.
+byte. Allocation returns `MEM_alloc`'s pointer directly, without an extra
+header or padding. Requests above 65,532 bytes are rejected before narrowing
+to the 16-bit allocator's argument. Available RAM usually imposes a lower
+limit.
 Ordinary allocation failure calls `SYS_die`, since throwing `std::bad_alloc`
 is not available. `new (std::nothrow)` returns null on failure. Null deletion
 is safe. Over-aligned allocation is not provided.
+
+Alignment means an address must be a multiple of a number of bytes. With
+`-m68000`, ordinary longs, long longs, floats, doubles, pointers and structs
+of longs need only two-byte alignment. Explicit `alignas` or
+`__attribute__((aligned(...)))` above two bytes needs an aligned allocation
+overload that this runtime does not provide. For example, `new` on
+`struct alignas(4) X` fails to link with:
+
+```text
+undefined reference to `operator new(unsigned int, std::align_val_t)'
+```
+
+Drop the `alignas` or `aligned` attribute if it is unnecessary, or allocate
+the object another way that guarantees its requested alignment. The GCC
+flag requires C++17 aligned-new support. Do not disable it with
+`-fno-aligned-new` or replace the project's C++ flags without preserving it.
 
 Automatic objects and explicitly deleted objects run their destructors.
 Global and function-local static destructors **never run**. A console game
