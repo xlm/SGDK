@@ -22,7 +22,7 @@ jobs:
         variant: ${{ fromJSON(github.event_name == 'schedule' && '["branch", "upstream"]' || '["branch"]') }}
     steps:
       - name: Check out fork
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'schedule' && 'cpp' || github.ref }}
