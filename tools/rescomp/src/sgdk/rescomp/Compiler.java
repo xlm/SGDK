@@ -214,6 +214,7 @@ public class Compiler
             outH.append("#include <genesis.h>\n\n");
             outH.append("#ifndef _" + headerName + "_H_\n");
             outH.append("#define _" + headerName + "_H_\n\n");
+            outH.append("#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n");
 
             // -- BINARY SECTION --
 
@@ -315,6 +316,7 @@ public class Compiler
             exportResources(nonBinResources, outB, outS, outH);
 
             outH.append("\n");
+            outH.append("#ifdef __cplusplus\n}\n#endif\n\n");
             outH.append("#endif // _" + headerName + "_H_\n");
 
             int unpackedSize = 0;
